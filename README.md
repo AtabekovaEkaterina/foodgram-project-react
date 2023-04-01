@@ -100,7 +100,7 @@ docker-compose exec beckend python manage.py loaddata fixtures.json
 
 **POST добавление рецепта в избранное**<br>
 `http://localhost/api/recipes/{id}/favorite/`
-<details><summary>Response 201 рецепт учпешно добавлен в избранное</summary>
+<details><summary>Response 201 рецепт уcпешно добавлен в избранное</summary>
 {<br>
   "id": 0,<br>
   "name": "string",<br>
