@@ -44,7 +44,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
     )
     filter_backends = (DjangoFilterBackend,)
     filterset_class = RecipeFilter
-    # filterset_fields = ('tags__slug',)
 
     def get_serializer_class(self):
         if self.action == "list" or self.action == "retrieve":
@@ -182,7 +181,7 @@ class UserViewSet(UserViewSet):
     @action(
         methods=('post', 'delete'),
         detail=True,
-        permission_classes=[IsAuthenticated]
+        permission_classes=(IsAuthenticated,)
     )
     def subscribe(self, request, id):
         user = request.user
