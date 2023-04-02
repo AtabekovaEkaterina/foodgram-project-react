@@ -123,10 +123,10 @@ docker-compose exec beckend python manage.py loaddata fixtures.json
 # Workflow для проекта
 ![image](https://github.com/AtabekovaEkaterina/foodgram-project-react/actions/workflows/foodgram_project.yml/badge.svg)<br/>
 Для данного проекта настроен workflow, содержащий 4 задачи (job):
-1. Проверка кода на соответствие стандарту PEP8 (с помощью пакета flake8) и запуск pytest
-2. Сборка и доставка докер-образа для контейнера backend на Docker Hub
-3. Автоматический деплой проекта на боевой сервер
-4. Отправка уведомления в Telegram о том, что процесс деплоя успешно завершился
+1. Проверка кода на соответствие стандарту PEP8 (с помощью пакета flake8) и запуск pytest.
+2. Сборка и доставка докер-образа для контейнера backend на Docker Hub.
+3. Автоматический деплой проекта на боевой сервер.
+4. Отправка уведомления в Telegram о том, что процесс деплоя успешно завершился.
 
 IP развернутого проекта http://51.250.3.92
 
