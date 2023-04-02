@@ -8,7 +8,7 @@ services:
       - ./.env
 
   backend:
-    image: katerina19870405/foodgram_backend:v02.04.23
+    image: katerina19870405/foodgram_backend:v02.04
     restart: always
     volumes:
       - static_value:/app/static/
@@ -19,7 +19,7 @@ services:
       - ./.env
 
   frontend:
-    image: katerina19870405/foodgram_frontend:v02.04.2023
+    image: katerina19870405/foodgram_frontend:v02.04
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
