@@ -13,13 +13,13 @@
 
 # Технологии
 ![image](https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue) Python 3.7<br/>
-![image](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=green) Django 2.2.16
+![image](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=green) Django 3.2
 
 
 # Инструкция по запуску
 1. Клонируйте репозиторий 
 ```
-git@github.com:AtabekovaEkaterina/infra_sp2.git
+git@github.com:AtabekovaEkaterina/foodgram-project-react.git
 ```
 2. В дирктории проекта infa/ создайте файл .env, укажите в файле переменные окружения:
 ```
@@ -50,7 +50,7 @@ docker-compose exec beckend python manage.py createsuperuser
 docker-compose exec beckend python manage.py collectstatic --no-input
 ```
 7. Теперь приложение доступно по адресу http://localhost
-8. Для наполнения БД из фикстура, выполните следующие команды из директории проекта infa/:
+8. Для наполнения БД из фикстура, выполните следующие команды из директории проекта data/:
 - скопирует файл fixtures.json в контейнер
 ```
 docker cp fixtures.json <beckend container id>:app/
@@ -124,11 +124,11 @@ docker-compose exec beckend python manage.py loaddata fixtures.json
 ![image](https://github.com/AtabekovaEkaterina/foodgram-project-react/actions/workflows/yamdb_workflow.yml/badge.svg)<br/>
 Для данного проекта настроен workflow, содержащий 4 задачи (job):
 1. Проверка кода на соответствие стандарту PEP8 (с помощью пакета flake8) и запуск pytest
-2. Сборка и доставка докер-образа для контейнера web на Docker Hub
+2. Сборка и доставка докер-образа для контейнера backend на Docker Hub
 3. Автоматический деплой проекта на боевой сервер
 4. Отправка уведомления в Telegram о том, что процесс деплоя успешно завершился
 
-IP развернутого проекта ___
+IP развернутого проекта http://51.250.3.92
 
 # Автор backend
 Екатерина Атабекова<br>
