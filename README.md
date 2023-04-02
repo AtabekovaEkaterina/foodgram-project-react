@@ -36,18 +36,18 @@ docker-compose up
 ```
 4. Выполните миграции: 
 ```
-docker-compose exec beckend python manage.py makemigrations
+docker-compose exec backend python manage.py makemigrations
 ```
 ```
-docker-compose exec beckend python manage.py migrate
+docker-compose exec backend python manage.py migrate
 ```
 5. Создайте суперпользователя 
 ```
-docker-compose exec beckend python manage.py createsuperuser
+docker-compose exec backend python manage.py createsuperuser
 ```
 6. Соберите статику
 ```
-docker-compose exec beckend python manage.py collectstatic --no-input
+docker-compose exec backend python manage.py collectstatic --no-input
 ```
 7. Теперь приложение доступно по адресу http://localhost
 8. Для наполнения БД из фикстура, выполните следующие команды из директории проекта data/:
@@ -121,7 +121,7 @@ docker-compose exec beckend python manage.py loaddata fixtures.json
 
 
 # Workflow для проекта
-![image](https://github.com/AtabekovaEkaterina/foodgram-project-react/actions/workflows/yamdb_workflow.yml/badge.svg)<br/>
+![image](https://github.com/AtabekovaEkaterina/foodgram-project-react/actions/workflows/foodgram_project.yml/badge.svg)<br/>
 Для данного проекта настроен workflow, содержащий 4 задачи (job):
 1. Проверка кода на соответствие стандарту PEP8 (с помощью пакета flake8) и запуск pytest
 2. Сборка и доставка докер-образа для контейнера backend на Docker Hub
