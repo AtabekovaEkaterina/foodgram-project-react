@@ -43,7 +43,7 @@ jobs:
         with:
           context: backend/
           push: true
-          tags: katerina19870405/foodgram_backend:v02.04.23
+          tags: katerina19870405/foodgram_backend:v02.04
   
   deploy:
     runs-on: ubuntu-latest
