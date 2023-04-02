@@ -23,7 +23,10 @@ SECRET_KEY = 'django-insecure-h6k3y%2*^ic8q1=3=v7a7c=se1pwtwu^srvpqg$1o$o$9aimdz
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    '84.201.158.250',
+]
 
 INSTALLED_APPS = [
     'api.apps.ApiConfig',
