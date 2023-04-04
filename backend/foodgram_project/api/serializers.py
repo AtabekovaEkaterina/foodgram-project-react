@@ -226,6 +226,16 @@ class WriteRecipeSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         return RecipeSerializer(instance, context=self.context).data
 
+    def validate_ingredients(self, value):
+        unique_list = []
+        for ingredient in value:
+            if ingredient in unique_list:
+                raise serializers.ValidationError(
+                    'Ингредиенты не могут повторяться в рецепте'
+                )
+            unique_list.append(ingredient)
+        return value
+
 
 class ShowRecipeSerializer(serializers.ModelSerializer):
 

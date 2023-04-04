@@ -6,6 +6,7 @@ from users.models import User
 
 class IngredientRecipeInline(admin.TabularInline):
     model = IngredientRecipe
+    min_num = 1
 
 
 @admin.register(User)
