@@ -51,16 +51,7 @@ docker-compose exec backend python manage.py collectstatic --no-input
 ```
 7. Теперь приложение доступно по адресу http://localhost
 8. Панель администратора доступна по адресу http://localhost/adnin/
-9. Для наполнения БД из фикстура, выполните следующие команды из директории проекта backend/foodgram_project/data/:
-- скопирует файл fixtures.json в контейнер
-```
-docker cp fixtures.json <backend container id>:app/
-``` 
-- загрузитe данные для БД из fixtures.json
-```
-docker-compose exec backend python manage.py loaddata fixtures.json
-```
-10. Или вы можете импортировать только ингредиенты в БД из csv-файла
+9. Добавьте ингредиенты в БД из csv-файла, для этого из директории проекта backend/foodgram_project/ выполните команду
 ```
 docker-compose exec backend python manage.py data_load
 ```
