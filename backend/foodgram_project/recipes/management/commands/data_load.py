@@ -10,7 +10,7 @@ DATA_ROOT = os.path.join(settings.BASE_DIR, 'data')
 
 
 class Command(BaseCommand):
-    help = 'loading ingredient from data in json or csv'
+    help = 'loading ingredient from data in csv'
 
     def add_arguments(self, parser):
         parser.add_argument(

@@ -51,7 +51,7 @@ docker-compose exec backend python manage.py collectstatic --no-input
 ```
 7. Теперь приложение доступно по адресу http://localhost
 8. Панель администратора доступна по адресу http://localhost/adnin/
-9. Для наполнения БД из фикстура, выполните следующие команды из директории проекта data/:
+9. Для наполнения БД из фикстура, выполните следующие команды из директории проекта backend/foodgram_project/data/:
 - скопирует файл fixtures.json в контейнер
 ```
 docker cp fixtures.json <backend container id>:app/
