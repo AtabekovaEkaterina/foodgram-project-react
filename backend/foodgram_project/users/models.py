@@ -16,11 +16,11 @@ class User(AbstractUser):
     username = models.CharField(
         max_length=150,
         unique=True,
-        verbose_name='Юзернейм',
+        verbose_name='Имя пользователя',
         validators=[
             RegexValidator(
                 regex=r'^[\w.@+-]+$',
-                message='Недопустимые символы'
+                message='Недопустимые символы в поле Имя пользователя'
             ),
         ]
     )
