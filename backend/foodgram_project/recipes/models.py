@@ -12,7 +12,7 @@ class Tag(models.Model):
         verbose_name='Название'
     )
     color = ColorField(
-        format="hexa",
+        default='#FF0000',
         unique=True,
         verbose_name='Цвет'
     )
