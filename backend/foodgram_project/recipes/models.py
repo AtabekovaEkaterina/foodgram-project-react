@@ -6,17 +6,13 @@ from users.models import User
 
 
 class Tag(models.Model):
-    COLOR_PALETTE = [
-        ("#FFFFFF", "white", ),
-        ("#000000", "black", ),
-    ]
     name = models.CharField(
         max_length=200,
         unique=True,
         verbose_name='Название'
     )
     color = ColorField(
-        samples=COLOR_PALETTE,
+        format="hexa",
         unique=True,
         verbose_name='Цвет'
     )
