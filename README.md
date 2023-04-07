@@ -23,6 +23,7 @@ git@github.com:AtabekovaEkaterina/foodgram-project-react.git
 ```
 2. В дирктории проекта infa/ создайте файл .env, укажите в файле переменные окружения:
 ```
+SECRET_KEY = 'django-insecure-h6k3y%2*^ic8q1=3=v7a7c=se1pwtwu^srvpqg$1o$o$9aimdz' #секретный ключ
 DB_ENGINE=django.db.backends.postgresql # указываем, что работаем с postgresql
 DB_NAME=postgres # имя базы данных
 POSTGRES_USER=postgres # логин для подключения к базе данных
@@ -35,9 +36,6 @@ DB_PORT=5432 # порт для подключения к БД
 docker-compose up
 ```
 4. Выполните миграции: 
-```
-docker-compose exec backend python manage.py makemigrations
-```
 ```
 docker-compose exec backend python manage.py migrate
 ```
@@ -127,6 +125,9 @@ docker-compose exec backend python manage.py data_load
 4. Отправка уведомления в Telegram о том, что процесс деплоя успешно завершился.
 
 IP развернутого проекта http://84.201.158.250
+Учетные данные superuser django на сервере для входа в панель администратора:
+username: super_user
+password: Katyaigor7
 
 # Автор backend
 Екатерина Атабекова<br>

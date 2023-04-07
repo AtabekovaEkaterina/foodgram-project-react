@@ -12,11 +12,11 @@ from rest_framework.response import Response
 from api.filters import RecipeFilter
 from api.paginations import CustomPagination
 from api.permissions import IsAuthorAdminOrReadOnly
-from api.serializers import (FavoriteSerializer, IngredientSerializer,
-                             RecipeSerializer, ShoppingCartSerializer,
-                             ShowRecipeSerializer, ShowSubscribeSerializer,
-                             SubscribeSerializer, TagSerializer,
-                             UserSerializer, WriteRecipeSerializer)
+from api.serializers import (CustomUserSerializer, FavoriteSerializer,
+                             IngredientSerializer, RecipeSerializer,
+                             ShoppingCartSerializer, ShowRecipeSerializer,
+                             ShowSubscribeSerializer, SubscribeSerializer,
+                             TagSerializer, WriteRecipeSerializer)
 from recipes.models import (Favorite, Ingredient, IngredientRecipe, Recipe,
                             ShoppingCart, Subscribe, Tag, User)
 
@@ -49,6 +49,25 @@ class RecipeViewSet(viewsets.ModelViewSet):
         if self.action == "list" or self.action == "retrieve":
             return RecipeSerializer
         return WriteRecipeSerializer
+
+    @staticmethod
+    def create_object_in_action(serializer, pk):
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        show_serializer = ShowRecipeSerializer(
+            Recipe.objects.get(id=pk)
+        )
+        return Response(
+            show_serializer.data,
+            status=status.HTTP_201_CREATED
+        )
+
+    @staticmethod
+    def delete_object_in_action(model, user, recipe):
+        get_object_or_404(
+            model, user=user, recipe=recipe
+        ).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(
         detail=False,
@@ -101,23 +120,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
         }
         if request.method == 'POST':
             serializer = ShoppingCartSerializer(data=data)
-            if serializer.is_valid():
-                serializer.save()
-                show_recipe = ShowRecipeSerializer(
-                    Recipe.objects.get(id=pk)
-                )
-                return Response(
-                    show_recipe.data,
-                    status=status.HTTP_201_CREATED
-                )
-            return Response(
-                serializer.errors,
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        get_object_or_404(
-            ShoppingCart, user=user, recipe=recipe
-        ).delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+            return self.create_object_in_action(serializer, pk)
+        return self.delete_object_in_action(ShoppingCart, user, recipe)
 
     @action(
         methods=('post', 'delete'),
@@ -133,30 +137,13 @@ class RecipeViewSet(viewsets.ModelViewSet):
         }
         if request.method == 'POST':
             serializer = FavoriteSerializer(data=data)
-            if serializer.is_valid():
-                serializer.save()
-                show_recipe = ShowRecipeSerializer(
-                    Recipe.objects.get(id=pk)
-                )
-                return Response(
-                    show_recipe.data,
-                    status=status.HTTP_201_CREATED
-                )
-            return Response(
-                serializer.errors,
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        get_object_or_404(
-            Favorite,
-            user=user,
-            recipe=recipe
-        ).delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+            return self.create_object_in_action(serializer, pk)
+        return self.delete_object_in_action(Favorite, user, recipe)
 
 
-class UserViewSet(UserViewSet):
+class CustomUserViewSet(UserViewSet):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = CustomUserSerializer
     permission_classes = (
         IsAuthorAdminOrReadOnly,
         IsAuthenticatedOrReadOnly,
@@ -192,19 +179,15 @@ class UserViewSet(UserViewSet):
         }
         if request.method == 'POST':
             serializer = SubscribeSerializer(data=data)
-            if serializer.is_valid():
-                serializer.save()
-                show_serializer = ShowSubscribeSerializer(
-                    User.objects.get(id=id),
-                    context={'request': request}
-                )
-                return Response(
-                    show_serializer.data,
-                    status=status.HTTP_201_CREATED
-                )
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            show_serializer = ShowSubscribeSerializer(
+                User.objects.get(id=id),
+                context={'request': request}
+            )
             return Response(
-                serializer.errors,
-                status=status.HTTP_400_BAD_REQUEST
+                show_serializer.data,
+                status=status.HTTP_201_CREATED
             )
         get_object_or_404(
             Subscribe,

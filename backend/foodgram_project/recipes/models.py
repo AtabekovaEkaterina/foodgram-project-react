@@ -1,3 +1,4 @@
+from colorfield.fields import ColorField
 from django.core.validators import MinValueValidator
 from django.db import models
 
@@ -5,13 +6,17 @@ from users.models import User
 
 
 class Tag(models.Model):
+    COLOR_PALETTE = [
+        ("#FFFFFF", "white", ),
+        ("#000000", "black", ),
+    ]
     name = models.CharField(
         max_length=200,
         unique=True,
         verbose_name='Название'
     )
-    color = models.CharField(
-        max_length=7,
+    color = ColorField(
+        samples=COLOR_PALETTE,
         unique=True,
         verbose_name='Цвет'
     )
@@ -22,7 +27,9 @@ class Tag(models.Model):
     )
 
     class Meta:
+        verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
+        ordering = ['id']
 
     def __str__(self):
         return self.slug
@@ -39,7 +46,9 @@ class Ingredient(models.Model):
     )
 
     class Meta:
+        verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
+        ordering = ['name']
 
     def __str__(self):
         return self.name
@@ -80,7 +89,9 @@ class Recipe(models.Model):
     )
 
     class Meta:
+        verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
+        ordering = ['-id']
 
     def __str__(self):
         return self.name
@@ -100,12 +111,15 @@ class IngredientRecipe(models.Model):
         verbose_name='Рецепт'
     )
     amount = models.IntegerField(
-        validators=[MinValueValidator(1)],
-        verbose_name='Количество'
-    )
+        validators=[MinValueValidator(
+            1, 'значение не может быть меньше 1'
+        )]
+    ),
 
     class Meta:
+        verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
+        ordering = ['ingredient']
         constraints = [
             models.UniqueConstraint(
                 fields=['ingredient', 'recipe'],
@@ -127,6 +141,9 @@ class ShoppingCart(models.Model):
     )
 
     class Meta:
+        verbose_name = 'Список покупок'
+        verbose_name_plural = 'Список покупок'
+        ordering = ['-recipe']
         constraints = [
             models.UniqueConstraint(
                 fields=['user', 'recipe'],
@@ -147,6 +164,9 @@ class Favorite(models.Model):
     )
 
     class Meta:
+        verbose_name = 'Избранное'
+        verbose_name_plural = 'Избранное'
+        ordering = ['-recipe']
         constraints = [
             models.UniqueConstraint(
                 fields=['user', 'recipe'],
@@ -168,6 +188,9 @@ class Subscribe(models.Model):
     )
 
     class Meta:
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'
+        ordering = ['user']
         constraints = [
             models.UniqueConstraint(
                 fields=['user', 'subscribing'],

@@ -1,6 +1,5 @@
 import base64
 
-import webcolors
 from django.core.files.base import ContentFile
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import serializers
@@ -12,7 +11,7 @@ from recipes.models import (Favorite, Ingredient, IngredientRecipe, Recipe,
 from users.models import User
 
 
-class UserSerializer(UserSerializer):
+class CustomUserSerializer(UserSerializer):
     is_subscribed = serializers.SerializerMethodField()
 
     class Meta:
@@ -34,7 +33,7 @@ class UserSerializer(UserSerializer):
         ).exists()
 
 
-class UserCreateSerializer(UserCreateSerializer):
+class CustomUserCreateSerializer(UserCreateSerializer):
 
     class Meta:
         model = User
@@ -47,17 +46,9 @@ class UserCreateSerializer(UserCreateSerializer):
         )
 
 
-class Hex2NameColor(serializers.Field):
-    def to_representation(self, value):
-        return value
-
-    def to_internal_value(self, data):
-        return webcolors.hex_to_name(data)
-
-
 class TagSerializer(serializers.ModelSerializer):
     name = serializers.CharField(read_only=True)
-    color = Hex2NameColor(read_only=True)
+    color = serializers.CharField(read_only=True)
     slug = serializers.SlugField(read_only=True)
 
     class Meta:
@@ -118,15 +109,15 @@ class WriteIngredientRecipeSerializer(IngredientSerializer):
 class Base64ImageField(serializers.ImageField):
     def to_internal_value(self, data):
         if isinstance(data, str) and data.startswith('data:image'):
-            format, imgstr = data.split(';base64,')
-            ext = format.split('/')[-1]
+            extstr, imgstr = data.split(';base64,')
+            ext = extstr.split('/')[-1]
             data = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
         return super().to_internal_value(data)
 
 
 class RecipeSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True, read_only=True)
-    author = UserSerializer(read_only=True)
+    author = CustomUserSerializer(read_only=True)
     ingredients = serializers.SerializerMethodField()
     image = Base64ImageField(required=False, allow_null=True)
     is_favorited = serializers.SerializerMethodField()
@@ -173,7 +164,7 @@ class WriteRecipeSerializer(serializers.ModelSerializer):
         source='ingredientrecipe_set'
     )
     image = Base64ImageField()
-    author = UserSerializer(read_only=True)
+    author = CustomUserSerializer(read_only=True)
 
     class Meta:
         model = Recipe
@@ -195,6 +186,15 @@ class WriteRecipeSerializer(serializers.ModelSerializer):
                 amount=ingredient.get('amount'),
                 recipe=recipe
             )
+
+    @staticmethod
+    def unique_ingredient_tag(value, message):
+        unique_list = []
+        for object in value:
+            if object in unique_list:
+                raise serializers.ValidationError(message)
+            unique_list.append(object)
+        return value
 
     def create(self, validated_data):
         author = self.context['request'].user
@@ -227,14 +227,12 @@ class WriteRecipeSerializer(serializers.ModelSerializer):
         return RecipeSerializer(instance, context=self.context).data
 
     def validate_ingredients(self, value):
-        unique_list = []
-        for ingredient in value:
-            if ingredient in unique_list:
-                raise serializers.ValidationError(
-                    'Ингредиенты не могут повторяться в рецепте'
-                )
-            unique_list.append(ingredient)
-        return value
+        message = 'Игредиенты должны быть уникальными в рецепте'
+        return self.unique_ingredient_tag(value, message)
+
+    def validate_tags(self, value):
+        message_validator = 'теги должны быть уникальными для рецепта'
+        return self.unique_ingredient_tag(value, message_validator)
 
 
 class ShowRecipeSerializer(serializers.ModelSerializer):
@@ -258,7 +256,7 @@ class ShoppingCartSerializer(serializers.ModelSerializer):
     validators = [UniqueTogetherValidator(
         queryset=ShoppingCart.objects.all(),
         fields=('recipe', 'user'),
-        message=('Рецепт уже добавлен в покупки')
+        message='Рецепт уже добавлен в покупки'
     )]
 
 
@@ -271,16 +269,18 @@ class FavoriteSerializer(serializers.ModelSerializer):
     validators = [UniqueTogetherValidator(
         queryset=Favorite.objects.all(),
         fields=('recipe', 'user'),
-        message=('Рецепт уже добавлен в избранное')
+        message='Рецепт уже добавлен в избранное'
     )]
 
 
-class ShowSubscribeSerializer(UserSerializer):
+class ShowSubscribeSerializer(CustomUserSerializer):
     recipes = serializers.SerializerMethodField()
     recipes_count = serializers.SerializerMethodField()
 
-    class Meta(UserSerializer.Meta):
-        fields = UserSerializer.Meta.fields + ('recipes', 'recipes_count')
+    class Meta(CustomUserSerializer.Meta):
+        fields = CustomUserSerializer.Meta.fields + (
+            'recipes', 'recipes_count'
+        )
 
     def get_recipes_count(self, obj):
         return obj.recipes.count()
@@ -309,7 +309,7 @@ class SubscribeSerializer(serializers.ModelSerializer):
     validators = [UniqueTogetherValidator(
         queryset=Subscribe.objects.all(),
         fields=('subscribing', 'user'),
-        message=('Подписка уже оформлена')
+        message='Подписка уже оформлена'
     )]
 
     def validate(self, data):
