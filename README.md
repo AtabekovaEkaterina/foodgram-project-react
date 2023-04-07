@@ -125,6 +125,7 @@ docker-compose exec backend python manage.py data_load
 4. Отправка уведомления в Telegram о том, что процесс деплоя успешно завершился.
 
 IP развернутого проекта http://84.201.158.250<br/>
+
 Учетные данные superuser django на сервере для входа в панель администратора:<br/>
 username: 
 ```
