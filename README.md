@@ -127,11 +127,11 @@ docker-compose exec backend python manage.py data_load
 IP развернутого проекта http://84.201.158.250<br/>
 
 Учетные данные superuser django на сервере для входа в панель администратора:<br/>
-username: 
+- username: 
 ```
 super_user
 ```
-password: 
+- password: 
 ```
 foodgram!
 ```
