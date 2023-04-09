@@ -63,6 +63,7 @@ jobs:
             sudo rm .env
             touch .env
             echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
+            echo DEBUG=${{ secrets.DEBUG }} >> .env
             echo HOSTS=${{ secrets.HOSTS_HOSTS}} >> .env
             echo REDIRECTION_HOSTS=${{ secrets.REDIRECTION_HOSTS }} >> .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
