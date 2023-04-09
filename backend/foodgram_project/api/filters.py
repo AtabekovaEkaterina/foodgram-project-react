@@ -10,7 +10,7 @@ class RecipeFilter(rest_framework.FilterSet):
         to_field_name='slug'
     )
     author = rest_framework.CharFilter(
-        field_name='author__username',
+        field_name='author__id',
     )
     is_favorited = rest_framework.filters.NumberFilter(
         method='is_favorited_filter'

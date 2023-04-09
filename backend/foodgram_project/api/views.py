@@ -11,7 +11,8 @@ from rest_framework.response import Response
 
 from api.filters import RecipeFilter
 from api.paginations import CustomPagination
-from api.permissions import IsAuthorAdminOrReadOnly
+from api.permissions import (IsAuthenticatedFilterFavoritedAndShoppingCart,
+                             IsAuthorAdminOrReadOnly)
 from api.serializers import (CustomUserSerializer, FavoriteSerializer,
                              IngredientSerializer, RecipeSerializer,
                              ShoppingCartSerializer, ShowRecipeSerializer,
@@ -39,6 +40,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = WriteRecipeSerializer
     permission_classes = (
+        IsAuthenticatedFilterFavoritedAndShoppingCart,
         IsAuthorAdminOrReadOnly,
         IsAuthenticatedOrReadOnly,
     )
