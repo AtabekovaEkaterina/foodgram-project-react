@@ -21,13 +21,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY', default='django-insecure-h6k3y%2*^ic8q1=3=v7a7c=se1pwtwu^srvpqg$1o$o$9aimdz')
 
-DEBUG = False
+DEBUG = os.getenv('DEBUG', default=True)
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
-    'backend',
-    '84.201.158.250',
+    os.getenv('HOSTS'),
+    os.getenv('REDIRECTION_HOSTS'),
 ]
 
 INSTALLED_APPS = [

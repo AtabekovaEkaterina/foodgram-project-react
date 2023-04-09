@@ -25,7 +25,7 @@ class Tag(models.Model):
     class Meta:
         verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
-        ordering = ['id']
+        ordering = ('name',)
 
     def __str__(self):
         return self.slug
@@ -44,7 +44,7 @@ class Ingredient(models.Model):
     class Meta:
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
-        ordering = ['name']
+        ordering = ('name',)
 
     def __str__(self):
         return self.name
@@ -83,11 +83,15 @@ class Recipe(models.Model):
         validators=[MinValueValidator(1)],
         verbose_name='Время приготовления'
     )
+    pub_date = models.DateTimeField(
+        'Дата публикации',
+        auto_now_add=True
+    )
 
     class Meta:
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
-        ordering = ['-id']
+        ordering = ('-pub_date',)
 
     def __str__(self):
         return self.name
@@ -116,7 +120,7 @@ class IngredientRecipe(models.Model):
     class Meta:
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
-        ordering = ['ingredient']
+        ordering = ('ingredient',)
         constraints = [
             models.UniqueConstraint(
                 fields=['ingredient', 'recipe'],
@@ -140,7 +144,7 @@ class ShoppingCart(models.Model):
     class Meta:
         verbose_name = 'Список покупок'
         verbose_name_plural = 'Список покупок'
-        ordering = ['-recipe']
+        ordering = ('-recipe',)
         constraints = [
             models.UniqueConstraint(
                 fields=['user', 'recipe'],
@@ -163,7 +167,7 @@ class Favorite(models.Model):
     class Meta:
         verbose_name = 'Избранное'
         verbose_name_plural = 'Избранное'
-        ordering = ['-recipe']
+        ordering = ('-recipe',)
         constraints = [
             models.UniqueConstraint(
                 fields=['user', 'recipe'],
@@ -187,7 +191,7 @@ class Subscribe(models.Model):
     class Meta:
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'
-        ordering = ['user']
+        ordering = ('user',)
         constraints = [
             models.UniqueConstraint(
                 fields=['user', 'subscribing'],
