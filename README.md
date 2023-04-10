@@ -23,7 +23,8 @@ git@github.com:AtabekovaEkaterina/foodgram-project-react.git
 ```
 2. В дирктории проекта infa/ создайте файл .env, укажите в файле переменные окружения:
 ```
-SECRET_KEY = 'django-insecure-h6k3y%2*^ic8q1=3=v7a7c=se1pwtwu^srvpqg$1o$o$9aimdz'
+SECRET_KEY = 'django-insecure-h6k3y%2*^ic8q1=3=v7a7c=se1pwtwu^srvpqg$1o$o$9aimdz' # секретный ключ 
+DEBUG=False # выключаем дебаг
 DB_ENGINE=django.db.backends.postgresql # указываем, что работаем с postgresql
 DB_NAME=postgres # имя базы данных
 POSTGRES_USER=postgres # логин для подключения к базе данных
