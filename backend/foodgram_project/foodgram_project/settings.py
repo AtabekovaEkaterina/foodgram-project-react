@@ -26,6 +26,8 @@ DEBUG = os.getenv('DEBUG', default='True') == 'True'
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
+    # 'backend',
+    # '84.201.158.250',
     os.getenv('HOSTS'),
     os.getenv('REDIRECTION_HOSTS'),
 ]
